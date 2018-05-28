@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -218,5 +219,30 @@ public class PersonData {
         }
         return message;
     }
-
+        private ArrayList<ArrayList<Element>> list=new ArrayList<>();
+        
+ 
+    public boolean search(Element hijo,int nivel) {
+        if (hijo.getChildren().isEmpty()) {
+            return true;
+        } else {
+            System.err.println("Entra");
+            List allElements = hijo.getChildren();
+            for (Object objectActual : allElements) {
+                Element elementoActual = (Element) objectActual;
+                list.get(nivel).add(elementoActual);
+                search(elementoActual, nivel+1);
+            }
+        }
+        return false;
+    }
+    
+    public ArrayList<ArrayList<Element>> retorno(){
+        list.add(new ArrayList<>());
+        list.add(new ArrayList<>());
+        list.add(new ArrayList<>());
+        list.add(new ArrayList<>());
+        search(root, 0);
+        return list;
+    }
 } // end class
