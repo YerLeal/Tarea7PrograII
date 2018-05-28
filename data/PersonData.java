@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -62,16 +59,16 @@ public class PersonData {
 
         Element eSurname1 = new Element("surname1");
         eSurname1.addContent(person.getSurname1());
-        
+
         Element eSurname2 = new Element("surname2");
         eSurname2.addContent(person.getSurname2());
-        
+
         Element eBirthdate = new Element("birthdate");
         eBirthdate.addContent(person.getBirthdate());
-        
+
         Element eCountry = new Element("country");
         eCountry.addContent(person.getCountry());
-        
+
         Element eFatherId = new Element("fatherId");
         eFatherId.addContent(person.getFatherId());
 
@@ -123,5 +120,53 @@ public class PersonData {
         }
         return false;
     } // metodo para eliminar persona por id
-    
+
+    private boolean searchPerson(String id) {
+        Person allPeople[] = getAllPeople();
+        for (int i = 0; i < allPeople.length; i++) {
+            if (allPeople[i].getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    } // searchPerson
+
+    public String updatePerson(Person newData) throws IOException {
+        String message = "";
+        if (!searchPerson(newData.getId())) {
+            message = "The person does'not exist.";
+        } else {
+            Person allPeople[] = getAllPeople();
+            Person person = new Person();
+            for (int i = 0; i < allPeople.length; i++) {
+                if (allPeople[i].getId().equals(newData.getId())) {
+                    person = allPeople[i];
+                    break;
+                }
+            }
+            if (!newData.getFirstName().equals("")) {
+                person.setFirstName(newData.getFirstName());
+            }
+            if (!newData.getSurname1().equals("")) {
+                person.setSurname1(newData.getSurname1());
+            }
+            if (!newData.getSurname2().equals("")) {
+                person.setSurname2(newData.getSurname2());
+            }
+            if (!newData.getBirthdate().equals("")) {
+                person.setBirthdate(newData.getBirthdate());
+            }
+            if (!newData.getCountry().equals("")) {
+                person.setCountry(newData.getCountry());
+            }
+            if (!newData.getFatherId().equals("")) {
+                person.setFatherId(newData.getFatherId());
+            }
+            deletePerson(person.getId());
+            insertPerson(person);
+            message = "Success";
+        }
+        return message;
+    }
+
 } // end class

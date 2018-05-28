@@ -20,6 +20,13 @@ public class Person {
     private String fatherId;
 
     public Person() {
+        this.id = "";
+        this.firstName = "";
+        this.surname1 = "";
+        this.surname2 = "";
+        this.birthdate = "";
+        this.country = "";
+        this.fatherId = "";
     }
 
     public Person(String id, String firstName, String surname1, String surname2, String birthdate, String country, String fatherId) {
