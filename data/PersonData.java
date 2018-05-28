@@ -49,6 +49,56 @@ public class PersonData {
         xmlOutputter.output(this.document, new PrintWriter(this.path));
     } // almacena en disco duro nuestro documento xml en la ruta especificada
 
+    private boolean idParentExist(String id) {
+        return true;
+    }
+
+    public void insertPerson1(Person person) throws IOException, IOException {
+        Element ePerson = new Element("person");
+        ePerson.setAttribute("id", person.getId());
+
+        Element eName = new Element("firstName");
+        eName.addContent(person.getFirstName());
+
+        Element eSurname1 = new Element("surname1");
+        eSurname1.addContent(person.getSurname1());
+
+        Element eSurname2 = new Element("surname2");
+        eSurname2.addContent(person.getSurname2());
+
+        Element eBirthdate = new Element("birthdate");
+        eBirthdate.addContent(person.getBirthdate());
+
+        Element eCountry = new Element("country");
+        eCountry.addContent(person.getCountry());
+
+        Element eFatherId = new Element("fatherId");
+        eFatherId.addContent(person.getFatherId());
+
+        ePerson.addContent(eName);
+        ePerson.addContent(eSurname1);
+        ePerson.addContent(eSurname2);
+        ePerson.addContent(eBirthdate);
+        ePerson.addContent(eCountry);
+        ePerson.addContent(eFatherId);
+        
+        if (idParentExist(person.getFatherId())) {
+            List allElements = this.root.getChildren();
+            int cont = 0;
+            for (Object objectActual : allElements) {
+                Element elementoActual = (Element) objectActual;
+                if (elementoActual.getAttributeValue("id").equals(person.getFatherId())) {
+                    elementoActual.addContent(ePerson);
+                    break;
+                }
+                cont++;
+            }
+        } else {
+            this.root.addContent(ePerson);
+        }
+        storeXML();
+    }
+
     public void insertPerson(Person person) throws IOException {
         // insertamos en el documento en memoria
         Element ePerson = new Element("person");
