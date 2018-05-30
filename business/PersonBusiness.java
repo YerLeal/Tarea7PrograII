@@ -34,4 +34,8 @@ public class PersonBusiness {
         this.personData.insertPerson(person);
     }
 
+    public Person[] getAllPeople() {
+        return this.personData.getAllPeople();
+    }
+
 } // end class

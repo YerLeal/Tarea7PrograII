@@ -7,6 +7,7 @@ package gui;
 
 import business.PersonBusiness;
 import domain.Person;
+import java.awt.List;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,12 @@ public class MainWindow extends javax.swing.JFrame {
         this.personBusiness = new PersonBusiness();
         initComponents();
         addItemsDate();
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            addDataMatrix(),
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5","Title 6","Title 7","Title 8"
+            }
+        ));
     } // constructor
 
     /**
@@ -114,6 +121,11 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel9.setText("Member");
 
         jbRefresh.setText("Refresh");
+        jbRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbRefreshActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -308,12 +320,19 @@ public class MainWindow extends javax.swing.JFrame {
                 if (message.equals("Success")) {
                     cleanSpaces();
                 }
-                JOptionPane.showMessageDialog(this, message, "Error", 0);
+                JOptionPane.showMessageDialog(this, message);
             } catch (IOException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        addDataMatrix();
+        repaint();
     }//GEN-LAST:event_jbUpdateActionPerformed
+
+    private void jbRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRefreshActionPerformed
+        addDataMatrix();
+        repaint();
+    }//GEN-LAST:event_jbRefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -352,6 +371,22 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
         });
+    }
+    
+    private String[][] addDataMatrix() {
+        Person allPerson[] = this.personBusiness.getAllPeople();
+        String person[][] = new String[10][8];
+        int count = 0;
+        for(int i=0; i<person.length; i++){
+            for (int j = 0; j < person[0].length; j++) {
+                if(count==allPerson.length){
+                    break;
+                }    
+                person[i][j]=allPerson[count].getFirstName();
+                count++;
+            }
+        }
+        return person;
     }
 
     private void addItemsDate() {

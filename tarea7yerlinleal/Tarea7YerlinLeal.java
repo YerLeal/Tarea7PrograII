@@ -24,23 +24,7 @@ public class Tarea7YerlinLeal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            PersonData data = new PersonData();
-            data.insertPerson1(new Person("111213", "PEPE", "Lopéz", "Caza", "14/06/97", "Costa Rica", "56789"));
-//            data.insertPerson1(new Person("56782", "PEPE", "Lopéz", "Caza", "14/06/97", "Costa Rica", "113"));
-//            data.insertPerson1(new Person("56784", "PEPE", "Lopéz", "Caza", "14/06/97", "Costa Rica", "112"));
-//            data.insertPerson1(new Person("56785", "PEPE", "Lopéz", "Caza", "14/06/97", "Costa Rica", "115"));
-            ArrayList<ArrayList<Element>> lista = data.retorno();
-            System.err.println(lista.get(1).size());
-
-//            Person p[] = data.getAllPeople();
-//            for (Person person : p) {
-//                System.out.println(person.toString());
-//            }
-        } catch (JDOMException | IOException ex) {
-            Logger.getLogger(Tarea7YerlinLeal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+    
     }
 
 }
