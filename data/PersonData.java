@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -58,37 +57,36 @@ public class PersonData {
         Element ePerson = new Element("person");
         ePerson.setAttribute("id", person.getId());
 
-        Element eName = new Element("firstName");
-        eName.addContent(person.getFirstName());
+//        Element eName = new Element("firstName");
+//        eName.addContent(person.getFirstName());
+//
+//        Element eSurname1 = new Element("surname1");
+//        eSurname1.addContent(person.getSurname1());
+//
+//        Element eSurname2 = new Element("surname2");
+//        eSurname2.addContent(person.getSurname2());
+//
+//        Element eBirthdate = new Element("birthdate");
+//        eBirthdate.addContent(person.getBirthdate());
+//
+//        Element eCountry = new Element("country");
+//        eCountry.addContent(person.getCountry());
+        Element eParentId = new Element("parentId");
+        eParentId.addContent(person.getParentId());
 
-        Element eSurname1 = new Element("surname1");
-        eSurname1.addContent(person.getSurname1());
+//        ePerson.addContent(eName);
+//        ePerson.addContent(eSurname1);
+//        ePerson.addContent(eSurname2);
+//        ePerson.addContent(eBirthdate);
+//        ePerson.addContent(eCountry);
+        ePerson.addContent(eParentId);
 
-        Element eSurname2 = new Element("surname2");
-        eSurname2.addContent(person.getSurname2());
-
-        Element eBirthdate = new Element("birthdate");
-        eBirthdate.addContent(person.getBirthdate());
-
-        Element eCountry = new Element("country");
-        eCountry.addContent(person.getCountry());
-
-        Element eFatherId = new Element("fatherId");
-        eFatherId.addContent(person.getFatherId());
-
-        ePerson.addContent(eName);
-        ePerson.addContent(eSurname1);
-        ePerson.addContent(eSurname2);
-        ePerson.addContent(eBirthdate);
-        ePerson.addContent(eCountry);
-        ePerson.addContent(eFatherId);
-        
-        if (idParentExist(person.getFatherId())) {
+        if (idParentExist(person.getParentId())) {
             List allElements = this.root.getChildren();
             int cont = 0;
             for (Object objectActual : allElements) {
                 Element elementoActual = (Element) objectActual;
-                if (elementoActual.getAttributeValue("id").equals(person.getFatherId())) {
+                if (elementoActual.getAttributeValue("id").equals(person.getParentId())) {
                     elementoActual.addContent(ePerson);
                     break;
                 }
@@ -99,41 +97,6 @@ public class PersonData {
         }
         storeXML();
     }
-
-    public void insertPerson(Person person) throws IOException {
-        // insertamos en el documento en memoria
-        Element ePerson = new Element("person");
-        ePerson.setAttribute("id", person.getId());
-
-        Element eName = new Element("firstName");
-        eName.addContent(person.getFirstName());
-
-        Element eSurname1 = new Element("surname1");
-        eSurname1.addContent(person.getSurname1());
-
-        Element eSurname2 = new Element("surname2");
-        eSurname2.addContent(person.getSurname2());
-
-        Element eBirthdate = new Element("birthdate");
-        eBirthdate.addContent(person.getBirthdate());
-
-        Element eCountry = new Element("country");
-        eCountry.addContent(person.getCountry());
-
-        Element eFatherId = new Element("fatherId");
-        eFatherId.addContent(person.getFatherId());
-
-        ePerson.addContent(eName);
-        ePerson.addContent(eSurname1);
-        ePerson.addContent(eSurname2);
-        ePerson.addContent(eBirthdate);
-        ePerson.addContent(eCountry);
-        ePerson.addContent(eFatherId);
-
-        this.root.addContent(ePerson); // agregar a root
-
-        storeXML(); // guardamos todo
-    } // inserta persona en el archivo
 
     public Person[] getAllPeople() {
         // obtenemos la cantidad de estudiantes
@@ -151,73 +114,76 @@ public class PersonData {
             currentPerson.setSurname2(currentElement.getChild("surname2").getValue());
             currentPerson.setBirthdate(currentElement.getChild("birthdate").getValue());
             currentPerson.setCountry(currentElement.getChild("country").getValue());
-            currentPerson.setFatherId(currentElement.getChild("fatherId").getValue());
+            currentPerson.setParentId(currentElement.getChild("parentId").getValue());
             personArray[count++] = currentPerson;
         }
         return personArray;
     } // metodo para obtener todos los objetos del xml
 
-    public boolean deletePerson(String id) throws IOException {
-        List allElements = this.root.getChildren();
-        int cont = 0;
-        for (Object objectActual : allElements) {
-            Element elementoActual = (Element) objectActual;
-            if (elementoActual.getAttributeValue("id").equals(id)) {
-                this.root.removeContent(cont);
-                storeXML();
-                return true;
-            }
-            cont++;
-        }
-        return false;
-    } // metodo para eliminar persona por id
+    public Element getRoot() {
+        return this.root;
+    }
 
-    private boolean searchPerson(String id) {
-        Person allPeople[] = getAllPeople();
-        for (int i = 0; i < allPeople.length; i++) {
-            if (allPeople[i].getId().equals(id)) {
-                return true;
+    public void printAll(Element e) {
+        List all = e.getChildren("person");
+        System.out.println(e.getAttributeValue("id"));
+        for (int i = 0; i < all.size(); i++) {
+            if (((Element) all.get(i)).getChildren("person").size() != 0) {
+                printAll((Element) all.get(i));
+            } else {
+//                String id1 = (((Element)all.get(i)).getAttributeValue("id"));
+                System.out.println((((Element) all.get(i)).getAttributeValue("id")));
             }
         }
-        return false;
-    } // searchPerson
+    }
 
-    public String updatePerson(Person newData) throws IOException {
-        String message = "";
-        if (!searchPerson(newData.getId())) {
-            message = "The person does'not exist.";
-        } else {
-            Person allPeople[] = getAllPeople();
-            Person person = new Person();
-            for (int i = 0; i < allPeople.length; i++) {
-                if (allPeople[i].getId().equals(newData.getId())) {
-                    person = allPeople[i];
-                    break;
+    public Element getElement(Element e, String id) {
+        System.out.println(e.getAttributeValue("id"));
+        List all = e.getChildren("person");
+        for (int i = 0; i < all.size(); i++) {
+            System.out.println("i:" + i);
+            if (((Element) all.get(i)).getChildren("person").size() != 0) {
+                System.out.println("lista!=0");
+                return getElement((Element) all.get(i), id);
+            } else {
+                System.out.println("lista vacia");
+                if ((((Element) all.get(i)).getAttributeValue("id")).equals(id)) {
+                    return (Element) all.get(i);
                 }
+            } // else
+            System.out.println("emm");
+        } // for
+        System.out.println("NOOOOOOO");
+        return null;
+    }
+
+    public boolean existe(Element e, String id) {
+//        System.out.println(e.getAttributeValue("id"));
+        if (e.getAttributeValue("id") != null) {
+            if (e.getAttributeValue("id").equals(id)) {
+                return true;
             }
-            if (!newData.getFirstName().equals("")) {
-                person.setFirstName(newData.getFirstName());
-            }
-            if (!newData.getSurname1().equals("")) {
-                person.setSurname1(newData.getSurname1());
-            }
-            if (!newData.getSurname2().equals("")) {
-                person.setSurname2(newData.getSurname2());
-            }
-            if (!newData.getBirthdate().equals("")) {
-                person.setBirthdate(newData.getBirthdate());
-            }
-            if (!newData.getCountry().equals("")) {
-                person.setCountry(newData.getCountry());
-            }
-            if (!newData.getFatherId().equals("")) {
-                person.setFatherId(newData.getFatherId());
-            }
-            deletePerson(person.getId());
-            insertPerson(person);
-            message = "Success";
         }
-        return message;
+        List all = e.getChildren("person");
+        for (int i = 0; i < all.size(); i++) {
+            System.out.println("i:" + i);
+            if (((Element) all.get(i)).getChildren("person").size() != 0) {
+                System.out.println("lista!=0");
+                return existe((Element) all.get(i), id);
+            } else {
+                if ((((Element) all.get(i)).getAttributeValue("id")).equals(id)) {
+                    System.out.println("\n\nSI RETORNA EN HIJOS");
+                    return true;
+                }
+            } // else
+            System.out.println("emm");
+        } // for
+        System.out.println("NO DEBE SALIR");
+        return false;
+    }
+
+    public void printNumHijos(Element e) {
+        System.out.println(e.getChildren("person").size());
     }
 
 } // end class

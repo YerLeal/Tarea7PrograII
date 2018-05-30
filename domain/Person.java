@@ -5,6 +5,8 @@
  */
 package domain;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Yerlin Leal
@@ -17,7 +19,7 @@ public class Person {
     private String surname2;
     private String birthdate;
     private String country;
-    private String fatherId;
+    private String parentId;
 
     public Person() {
         this.id = "";
@@ -26,7 +28,17 @@ public class Person {
         this.surname2 = "";
         this.birthdate = "";
         this.country = "";
-        this.fatherId = "";
+        this.parentId = "";
+    }
+    
+    public Person(String id, String parentId){
+        this.id = id;
+        this.firstName = "";
+        this.surname1 = "";
+        this.surname2 = "";
+        this.birthdate = "";
+        this.country = "";
+        this.parentId = parentId;
     }
 
     public Person(String id, String firstName, String surname1, String surname2, String birthdate, String country, String fatherId) {
@@ -36,7 +48,7 @@ public class Person {
         this.surname2 = surname2;
         this.birthdate = birthdate;
         this.country = country;
-        this.fatherId = fatherId;
+        this.parentId = fatherId;
     }
 
     public String getId() {
@@ -87,17 +99,17 @@ public class Person {
         this.country = country;
     }
 
-    public String getFatherId() {
-        return fatherId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setFatherId(String fatherId) {
-        this.fatherId = fatherId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     @Override
     public String toString() {
-        return "Person{" + "id=" + id + ", firstName=" + firstName + ", surname1=" + surname1 + ", surname2=" + surname2 + ", birthdate=" + birthdate + ", country=" + country + ", fatherId=" + fatherId + '}';
+        return "Person{" + "id=" + id + ", firstName=" + firstName + ", surname1=" + surname1 + ", surname2=" + surname2 + ", birthdate=" + birthdate + ", country=" + country + ", parentId=" + parentId + '}';
     }
 
 } // end class
