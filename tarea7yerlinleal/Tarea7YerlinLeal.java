@@ -23,19 +23,7 @@ public class Tarea7YerlinLeal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            PersonData data = new PersonData();
-//            data.printAll(data.getRoot());
-            
-//            Element e = data.getElement(data.getRoot(), "1");
-//            System.out.println(e==null);
-//            data.printNumHijos(e);
 
-            System.out.println("\n\t"+data.existe(data.getRoot(), "2"));
-            
-        } catch (JDOMException | IOException ex) {
-            Logger.getLogger(Tarea7YerlinLeal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    } // main
 
-}
+} // end class
